@@ -294,10 +294,22 @@ document.addEventListener("DOMContentLoaded", () => {
           .padStart(2, "0")} ${period}`;
       };
 
-      const startTime = formatTime(details.schedule_details.start_time);
-      const endTime = formatTime(details.schedule_details.end_time);
+      const startTime = details.schedule_details.start_time
+        ? formatTime(details.schedule_details.start_time)
+        : "";
+      const endTime = details.schedule_details.end_time
+        ? formatTime(details.schedule_details.end_time)
+        : "";
 
-      return `${days}, ${startTime} - ${endTime}`;
+      if (startTime && endTime) {
+        return `${days}, ${startTime} - ${endTime}`;
+      }
+
+      if (startTime) {
+        return `${days}, ${startTime}`;
+      }
+
+      return days;
     }
 
     // Fallback to the string format if schedule_details isn't available
@@ -321,11 +333,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return "sports";
     } else if (
       name.includes("art") ||
+      name.includes("manga") ||
       name.includes("music") ||
       name.includes("theater") ||
       name.includes("drama") ||
       desc.includes("creative") ||
-      desc.includes("paint")
+      desc.includes("paint") ||
+      desc.includes("graphic novel")
     ) {
       return "arts";
     } else if (
